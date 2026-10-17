@@ -1,0 +1,5 @@
+incident_db/
+
+.env
+.env.*
+valgenesis_incident.json
