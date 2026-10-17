@@ -12,12 +12,14 @@ class LLM:
         )
 
     def call(self, messages, tools, model_name):
+
         response_stream = self.client.chat.completions.create(
             model=model_name,
             messages=messages,
             tools=tools,
             stream=True,
         )
+
 
         response_content = ""
         tool_responses = {}
@@ -46,7 +48,7 @@ class LLM:
                             },
                         }
 
-                    if tool_chunk.id:
+                    if tool_chunk.id is not None:
                         tool_responses[tool_index]["id"] += tool_chunk.id
 
                     if tool_chunk.function:
@@ -63,7 +65,7 @@ class LLM:
             if choice.finish_reason == "tool_calls":
                 return {
                     "role": "assistant",
-                    "content": response_content or None,
+                    "content": None,
                     "tool_calls": [
                         tool_responses[index]
                         for index in sorted(tool_responses)
